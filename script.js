@@ -36,6 +36,32 @@ function addTransactionDOM(transaction) {
     list.appendChild(item);
 }
 
+//update the balance, income, and expense
+function updateValues() {
+    //loop through transactions and create a new array of transaction.amounts
+    const amounts = transactions.map(transaction => transaction.amount);
+    //console.log(amounts);
+    
+    //take acc and append onto that the current item (amount), start at 0, toFixed will add decimal places (2)
+    const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+    //console.log(total);
+
+    //get income
+    //set to amounts, filter out items GREATER THAN zero to ensure it's income
+    //reduce to add up income 
+    const income = amounts.filter(item => item > 0).reduce((acc, item) => (acc +=item), 0).toFixed(2);
+    //console.log(income);
+
+    //get expense 
+    //set to amounts, filter out items LESS THAN zero
+    const expense = (amounts.filter(item => item < 0).reduce((acc, item) => (acc += item),0) * -1).toFixed(2);
+    console.log(expense);
+
+    balance.innerText = `$${total}`;
+    money_plus.innerText = `$${income}`;
+    money_minus.innerText = `$${expense}`;
+}
+
 //init app
 function init() {
     //start with a blank list
@@ -43,6 +69,8 @@ function init() {
 
     //loop through transactions and run addTransactionDOM on each one
     transactions.forEach(addTransactionDOM)
+
+    updateValues();
 }
 
 init();
